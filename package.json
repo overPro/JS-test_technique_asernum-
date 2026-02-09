@@ -1,0 +1,43 @@
+{
+  "name": "documents-microservices",
+  "version": "1.0.0",
+  "description": "Système gestion collaborative documents avec NestJS microservices",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "npm run start:docs && npm run start:sharing && npm run start:worker",
+    "start:docs": "cd documents-api && npm run start",
+    "start:docs:dev": "cd documents-api && npm run start:dev",
+    "start:sharing": "cd sharing-api && npm run start",
+    "start:sharing:dev": "cd sharing-api && npm run start:dev",
+    "start:worker": "cd processing-worker && npm run start",
+    "start:worker:dev": "cd processing-worker && npm run start:dev",
+    "migrate": "cd shared && npm run migrate",
+    "migrate:create": "cd shared && npm run migrate:create",
+    "build": "npm run build:docs && npm run build:sharing && npm run build:worker",
+    "build:docs": "cd documents-api && npm run build",
+    "build:sharing": "cd sharing-api && npm run build",
+    "build:worker": "cd processing-worker && npm run build",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:down:v": "docker compose down -v",
+    "docker:logs": "docker compose logs -f"
+  },
+  "keywords": [
+    "nestjs",
+    "microservices",
+    "typescript",
+    "postgresql",
+    "redis",
+    "bullmq",
+    "cqrs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "dotenv": "^16.3.1",
+    "nodemon": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.2"
+  }
+}

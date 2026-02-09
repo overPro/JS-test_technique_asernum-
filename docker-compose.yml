@@ -1,0 +1,152 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: documents_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: documents_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./shared/database/init-db.sql:/docker-entrypoint-initdb.d/01-init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - microservices
+
+  # Redis Cache & Message Broker
+  redis:
+    image: redis:7-alpine
+    container_name: documents_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - microservices
+
+  # Documents API Service
+  documents-api:
+    build:
+      context: .
+      dockerfile: documents-api/Dockerfile
+    container_name: documents_api
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/documents_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+      JWT_SECRET: ${JWT_SECRET:-9f4b2c7d5e8a1f0c3b6d9a2e7f4c1b8d5a0e3f6c9b2d7a4e1f8c6b3d0a5e9f2}
+      UPLOAD_BASE_DIR: /app/uploads
+      UPLOAD_MAX_SIZE_MB: 50
+      UPLOAD_ALLOWED_TYPES: application/pdf,image/jpeg,image/png,text/plain
+      USER_QUOTA_MB: 100
+      SHARING_API_URL: http://sharing-api:3002
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./uploads:/app/uploads
+    networks:
+      - microservices
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3001/health"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Sharing API Service
+  sharing-api:
+    build:
+      context: .
+      dockerfile: sharing-api/Dockerfile
+    container_name: sharing_api
+    environment:
+      NODE_ENV: production
+      PORT: 3002
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/documents_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+      JWT_SECRET: ${JWT_SECRET:-9f4b2c7d5e8a1f0c3b6d9a2e7f4c1b8d5a0e3f6c9b2d7a4e1f8c6b3d0a5e9f2}
+      SHARE_LINK_EXPIRY_HOURS: 24
+      SHARE_LINK_TOKEN_LENGTH: 32
+      DOCUMENTS_API_URL: http://documents-api:3001
+    ports:
+      - "3002:3002"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - microservices
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3002/health"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Processing Worker Service
+  processing-worker:
+    build:
+      context: .
+      dockerfile: processing-worker/Dockerfile
+    container_name: processing_worker
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/documents_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+      JWT_SECRET: ${JWT_SECRET:-9f4b2c7d5e8a1f0c3b6d9a2e7f4c1b8d5a0e3f6c9b2d7a4e1f8c6b3d0a5e9f2}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./uploads:/app/uploads
+    networks:
+      - microservices
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  microservices:
+    driver: bridge

@@ -1,0 +1,30 @@
+export const HTTP_CODES = {
+  OK: 200,
+  CREATED: 201,
+  ACCEPTED: 202,
+  NO_CONTENT: 204,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  CONFLICT: 409,
+  GONE: 410,
+  INTERNAL_SERVER_ERROR: 500,
+} as const;
+
+export const ERROR_MESSAGES = {
+  INVALID_CREDENTIALS: 'Invalid email or password',
+  USER_NOT_FOUND: 'User not found',
+  USER_EXISTS: 'User with this email already exists',
+  DOCUMENT_NOT_FOUND: 'Document not found',
+  FOLDER_NOT_FOUND: 'Folder not found',
+  SHARE_NOT_FOUND: 'Share link not found',
+  SHARE_EXPIRED: 'Share link has expired',
+  SHARE_REVOKED: 'Share link has been revoked',
+  QUOTA_EXCEEDED: 'Storage quota exceeded',
+  FILE_TOO_LARGE: 'File size exceeds maximum allowed',
+  INVALID_FILE_TYPE: 'File type not allowed',
+  UNAUTHORIZED_ACCESS: 'You do not have permission to access this resource',
+  FOLDER_NOT_EMPTY: 'Folder is not empty',
+  DUPLICATE_FOLDER_NAME: 'Folder with this name already exists',
+} as const;
