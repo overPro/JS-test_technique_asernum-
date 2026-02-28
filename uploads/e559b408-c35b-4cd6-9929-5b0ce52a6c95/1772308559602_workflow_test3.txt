@@ -1,0 +1,2 @@
+Final proof test with 2 second processing delay
+to clearly capture status: pending → processing → completed

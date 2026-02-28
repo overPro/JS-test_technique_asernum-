@@ -58,4 +58,8 @@ export class ConfigurationService {
   get uploadBaseDir(): string {
     return this.configService.get<string>('UPLOAD_BASE_DIR', './uploads');
   }
+
+  get processingDelayMs(): number {
+    return parseInt(this.configService.get<string>('PROCESSING_DELAY_MS', '500'), 10);
+  }
 }

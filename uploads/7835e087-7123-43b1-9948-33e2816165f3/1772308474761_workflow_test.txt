@@ -1,0 +1,6 @@
+ASERNUM Production Workflow Test Document
+This file demonstrates the complete asynchronous processing pipeline
+with configurable delay to show status transitions.
+
+Timestamp: 2026-02-28
+Processed by: BullMQ + Worker

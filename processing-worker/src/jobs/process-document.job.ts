@@ -15,6 +15,8 @@ export class ProcessDocumentProcessor extends WorkerHost {
   async process(job: Job<any>): Promise<any> {
     const { documentId, filePath, mimeType } = job.data;
 
+    this.logger.log(`[REDIS] Job received from queue: ${job.id}`);
+    this.logger.log(`[REDIS] Job data: documentId=${documentId}, filePath=${filePath}, mimeType=${mimeType}`);
     this.logger.log(`Job started: ${job.id} for document ${documentId}`);
 
     try {

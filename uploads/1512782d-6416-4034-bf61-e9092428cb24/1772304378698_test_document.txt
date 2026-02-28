@@ -1,0 +1,17 @@
+ASERNUM Document Management System - Test Document
+
+This is a test document for validating the complete workflow:
+- User registration
+- Authentication with JWT
+- File upload with multipart handling
+- Async processing with BullMQ
+- Database persistence
+- Share link generation
+
+Created: 2026-02-28
+Type: Text Document
+Purpose: System Validation
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.

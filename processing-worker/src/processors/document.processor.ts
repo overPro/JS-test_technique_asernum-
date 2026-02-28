@@ -5,6 +5,7 @@ import { ImageProcessor } from './image.processor';
 import { PdfProcessor } from './pdf.processor';
 import { DocumentRepository } from '../database/repositories/document.repository';
 import { DocumentStatus } from '../database/entities/document.entity';
+import { ConfigurationService } from '../config/configuration.service';
 
 @Injectable()
 export class DocumentProcessor {
@@ -14,6 +15,7 @@ export class DocumentProcessor {
     private imageProcessor: ImageProcessor,
     private pdfProcessor: PdfProcessor,
     private documentRepository: DocumentRepository,
+    private configService: ConfigurationService,
   ) {}
 
   async processDocument(
@@ -28,6 +30,12 @@ export class DocumentProcessor {
         documentId,
         DocumentStatus.PROCESSING,
       );
+      this.logger.log(`Document status set to PROCESSING: ${documentId}`);
+
+      // Configurable delay to simulate processing time
+      const delayMs = this.configService.processingDelayMs;
+      this.logger.log(`Processing delay: ${delayMs}ms`);
+      await new Promise(resolve => setTimeout(resolve, delayMs));
 
       const fileHash = this.generateSHA256(filePath);
       this.logger.log(`Hash generated: ${fileHash}`);
