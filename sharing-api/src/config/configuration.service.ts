@@ -33,15 +33,15 @@ export class ConfigurationService {
   }
 
   get shareLinkExpiryHours(): number {
-    return this.configService.get<number>('SHARE_LINK_EXPIRY_HOURS', 24);
+    return parseInt(this.configService.get<string>('SHARE_LINK_EXPIRY_HOURS', '24'), 10);
   }
 
   get shareLinkMaxDownDays(): number {
-    return this.configService.get<number>('SHARE_LINK_MAX_DOWN_DAYS', 30);
+    return parseInt(this.configService.get<string>('SHARE_LINK_MAX_DOWN_DAYS', '30'), 10);
   }
 
   get shareLinkTokenLength(): number {
-    return this.configService.get<number>('SHARE_LINK_TOKEN_LENGTH', 32);
+    return parseInt(this.configService.get<string>('SHARE_LINK_TOKEN_LENGTH', '32'), 10);
   }
 
   get documentsApiUrl(): string {

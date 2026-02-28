@@ -6,16 +6,25 @@ import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  const fastifyAdapter = new FastifyAdapter();
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    fastifyAdapter,
   );
+
+  // Register Fastify multipart plugin
+  await app.register(require('@fastify/multipart') as any, {
+    limits: {
+      fileSize: 52428800, // 50 MB
+    },
+  });
 
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT') || 3001;
   const nodeEnv = configService.get<string>('NODE_ENV') || 'development';
 
-  
+
   app.useGlobalFilters(new AllExceptionsFilter());
 
   // activation CORS
@@ -24,7 +33,7 @@ async function bootstrap() {
     credentials: true,
   });
 
-  // Documentation Swagger 
+  // Documentation Swagger
   const config = new DocumentBuilder()
     .setTitle('Documents API')
     .setDescription('API gestion des fichiers et métadonnées')
@@ -36,11 +45,11 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  
+
   await app.listen(port, '0.0.0.0');
 
   if (nodeEnv === 'development') {
-    console.log(`La documentation de l’API est disponible sur http://localhost:${port}`);
+    console.log(`La documentation de l'API est disponible sur http://localhost:${port}`);
     console.log(`Swagger docs: http://localhost:${port}/api/docs`);
   }
 }

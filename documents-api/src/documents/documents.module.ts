@@ -6,16 +6,17 @@ import { DocumentsService } from './documents.service';
 import { DocumentsController } from './documents.controller';
 import { ConfigurationService } from '@config/configuration.service';
 import { ConfigurationModule } from '@config/configuration.module';
+import { UploadsModule } from '@uploads/uploads.module';
 
 
-// Commands
+
 import { UploadDocumentHandler } from './handlers/commands/upload-document.handler';
 
-// Queries
+
 import { GetDocumentHandler } from './handlers/queries/get-document.handler';
 import { SearchDocumentsHandler } from './handlers/queries/get-document.handler';
 
-// Events
+
 import { DocumentUploadedHandler } from './handlers/events/document-uploaded.handler';
 
 const CommandHandlers = [UploadDocumentHandler];
@@ -27,6 +28,7 @@ const EventHandlers = [DocumentUploadedHandler];
     CqrsModule,
     DatabaseModule,
     ConfigurationModule,
+    UploadsModule,
     BullModule.registerQueue({
       name: 'documents',
     }),

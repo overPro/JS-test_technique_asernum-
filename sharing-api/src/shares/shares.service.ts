@@ -1,13 +1,16 @@
 import { Injectable, BadRequestException, NotFoundException, ConflictException } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { ShareRepository } from '../database/repositories/share.repository';
+import { DocumentRepository } from '../database/repositories/document.repository';
 import { ConfigurationService } from '../config/configuration.service';
 import { CreateShareDto } from './dto/create-share.dto';
+import { DocumentStatus } from '../database/entities/document.entity';
 
 @Injectable()
 export class SharesService {
   constructor(
     private shareRepository: ShareRepository,
+    private documentRepository: DocumentRepository,
     private configService: ConfigurationService,
   ) {}
 
@@ -20,6 +23,19 @@ export class SharesService {
 
     if (!['readonly', 'readwrite'].includes(mode)) {
       throw new BadRequestException('Invalid share mode');
+    }
+
+    // Verify document exists and belongs to the user
+    const document = await this.documentRepository.findByIdAndUser(documentId, ownerUserId);
+    if (!document) {
+      throw new NotFoundException('Document not found');
+    }
+
+    // Verify document is completed before sharing
+    if (document.status !== DocumentStatus.COMPLETED) {
+      throw new ConflictException(
+        `Document must be completed before sharing. Current status: ${document.status}`,
+      );
     }
 
     const token = this.generateToken();

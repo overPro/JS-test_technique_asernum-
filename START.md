@@ -1,6 +1,6 @@
 #   DÉMARRER LE PROJET EN 1 COMMANDE
 
-## ✨ C'EST SIMPLE:
+##  C'EST SIMPLE:
 
 ```bash
 docker compose up -d

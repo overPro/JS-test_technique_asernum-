@@ -23,7 +23,7 @@ import { HealthModule } from './health/health.module';
         url: configService.get<string>('DATABASE_URL'),
         entities: ['dist/**/*.entity.js'],
         migrations: ['dist/migrations/*.js'],
-        migrationsRun: false,
+        migrationsRun: true,
         synchronize: false,
         logging: configService.get<string>('NODE_ENV') === 'development',
       }),
@@ -31,6 +31,7 @@ import { HealthModule } from './health/health.module';
     DatabaseModule,
     AuthModule,
     SharesModule,
+    HealthModule,
   ],
 })
 export class AppModule {}

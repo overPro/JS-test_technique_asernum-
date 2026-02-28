@@ -20,8 +20,8 @@ export class DocumentsService {
     originalFilename: string,
     mimeType: string,
     sizeBytes: number,
+    fileBuffer: Buffer,
     folderId?: string,
-    filePath?: string,
   ) {
     const command = new UploadDocumentCommand(
       userId,
@@ -29,8 +29,8 @@ export class DocumentsService {
       originalFilename,
       mimeType,
       sizeBytes,
+      fileBuffer,
       folderId,
-      filePath,
     );
 
     return this.commandBus.execute(command);

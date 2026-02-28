@@ -44,11 +44,11 @@ export class ConfigurationService {
   }
 
   get redisPort(): number {
-    return this.configService.get<number>('REDIS_PORT', 6379);
+    return parseInt(this.configService.get<string>('REDIS_PORT', '6379'), 10);
   }
 
   get redisDb(): number {
-    return this.configService.get<number>('REDIS_DB', 0);
+    return parseInt(this.configService.get<string>('REDIS_DB', '0'), 10);
   }
 
   get uploadBaseDir(): string {
@@ -56,7 +56,7 @@ export class ConfigurationService {
   }
 
   get uploadMaxSizeMb(): number {
-    return this.configService.get<number>('UPLOAD_MAX_SIZE_MB', 50);
+    return parseInt(this.configService.get<string>('UPLOAD_MAX_SIZE_MB', '50'), 10);
   }
 
   get uploadAllowedTypes(): string[] {
@@ -68,7 +68,7 @@ export class ConfigurationService {
   }
 
   get userQuotaMb(): number {
-    return this.configService.get<number>('USER_QUOTA_MB', 100);
+    return parseInt(this.configService.get<string>('USER_QUOTA_MB', '100'), 10);
   }
 
   get sharingApiUrl(): string {

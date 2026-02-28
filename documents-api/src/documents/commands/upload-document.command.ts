@@ -5,7 +5,7 @@ export class UploadDocumentCommand {
     public readonly originalFilename: string,
     public readonly mimeType: string,
     public readonly sizeBytes: number,
+    public readonly fileBuffer: Buffer,
     public readonly folderId?: string,
-    public readonly filePath?: string,
   ) {}
 }

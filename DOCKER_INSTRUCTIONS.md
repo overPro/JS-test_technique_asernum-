@@ -1,14 +1,13 @@
-#   Docker Compose Guide
 
-## Quick Start
 
-Le projet est 100% dockerisé et prêt pour la production. Pour lancer l'ensemble du stack avec une seule commande:
+
+
 
 ```bash
 docker compose up -d
 ```
 
-**C'est tout!** Les 5 conteneurs vont se lancer automatiquement:
+# conteneur lancer
 - PostgreSQL 15  
 - Redis 7  
 - documents-api (port 3001)  
@@ -60,7 +59,7 @@ Par défaut le JWT_SECRET est changeable dans docker-compose.yml.
 - **Swagger Docs (Documents)**: http://localhost:3001/api/docs
 - **Swagger Docs (Sharing)**: http://localhost:3002/api/docs
 
-## Production Deployment
+## explication
 
 1. Changez JWT_SECRET dans docker-compose.yml
 2. Changez les mots de passe PostgreSQL

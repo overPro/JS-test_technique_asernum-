@@ -5,7 +5,7 @@ import { ConfigurationService } from './configuration.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // 👈 RECOMMANDÉ
+      isGlobal: true, 
     }),
   ],
   providers: [ConfigurationService],

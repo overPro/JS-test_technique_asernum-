@@ -32,27 +32,27 @@ export class ConfigurationService {
   }
 
   get redisPort(): number {
-    return this.configService.get<number>('REDIS_PORT', 6379);
+    return parseInt(this.configService.get<string>('REDIS_PORT', '6379'), 10);
   }
 
   get redisDb(): number {
-    return this.configService.get<number>('REDIS_DB', 0);
+    return parseInt(this.configService.get<string>('REDIS_DB', '0'), 10);
   }
 
   get workerConcurrency(): number {
-    return this.configService.get<number>('WORKER_CONCURRENCY', 5);
+    return parseInt(this.configService.get<string>('WORKER_CONCURRENCY', '5'), 10);
   }
 
   get workerTimeoutMs(): number {
-    return this.configService.get<number>('WORKER_TIMEOUT_MS', 30000);
+    return parseInt(this.configService.get<string>('WORKER_TIMEOUT_MS', '30000'), 10);
   }
 
   get workerRetryAttempts(): number {
-    return this.configService.get<number>('WORKER_RETRY_ATTEMPTS', 3);
+    return parseInt(this.configService.get<string>('WORKER_RETRY_ATTEMPTS', '3'), 10);
   }
 
   get workerRetryDelayMs(): number {
-    return this.configService.get<number>('WORKER_RETRY_DELAY_MS', 5000);
+    return parseInt(this.configService.get<string>('WORKER_RETRY_DELAY_MS', '5000'), 10);
   }
 
   get uploadBaseDir(): string {

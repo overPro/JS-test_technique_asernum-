@@ -60,8 +60,8 @@ export class SharesController {
     return this.sharesService.revokeShare(shareId, user.id);
   }
 
-  @Get('token/:token')
-  @ApiOperation({ summary: 'Validate share token' })
+  @Get('public/token/:token')
+  @ApiOperation({ summary: 'Validate share token (public endpoint)' })
   async validateToken(@Param('token') token: string) {
     return this.sharesService.getShareByToken(token);
   }

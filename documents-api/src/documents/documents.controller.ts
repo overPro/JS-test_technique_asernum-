@@ -6,16 +6,13 @@ import {
   Param,
   Query,
   UseGuards,
-  UseInterceptors,
-  UploadedFile,
   BadRequestException,
+  Req,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { DocumentsService } from './documents.service';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 import { CurrentUser } from '@auth/decorators/current-user.decorator';
-import { UploadDocumentDto } from './dto/document.dto';
 import { SearchDocumentsDto } from './dto/document.dto';
 import { ConfigurationService } from '@config/configuration.service';
 
@@ -30,35 +27,42 @@ export class DocumentsController {
   ) {}
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'Upload a document' })
   @ApiConsumes('multipart/form-data')
   async uploadDocument(
     @CurrentUser() user: any,
-    @UploadedFile() file: any,
-    @Query() query: UploadDocumentDto,
+    @Req() req: any,
   ) {
-    if (!file) {
+    const data = await req.file();
+    if (!data) {
       throw new BadRequestException('No file provided');
     }
 
+    const fileBuffer = await data.toBuffer();
+    const mimetype = data.mimetype || 'application/octet-stream';
+    const filename = data.filename || 'unknown';
+
+    if (fileBuffer.length === 0) {
+      throw new BadRequestException('File is empty');
+    }
+
     const maxFileSize = this.configService.uploadMaxSizeMb * 1024 * 1024;
-    if (file.size > maxFileSize) {
+    if (fileBuffer.length > maxFileSize) {
       throw new BadRequestException('File size exceeds maximum allowed');
     }
 
-    if (!this.configService.uploadAllowedTypes.includes(file.mimetype)) {
+    if (!this.configService.uploadAllowedTypes.includes(mimetype)) {
       throw new BadRequestException('File type not allowed');
     }
 
     return this.documentsService.uploadDocument(
       user.id,
-      file.filename,
-      query.originalFilename,
-      file.mimetype,
-      file.size,
-      query.folderId,
-      `/uploads/${user.id}/${file.filename}`,
+      filename.replace(/\s+/g, '_'),
+      filename,
+      mimetype,
+      fileBuffer.length,
+      fileBuffer,
+      undefined,
     );
   }
 

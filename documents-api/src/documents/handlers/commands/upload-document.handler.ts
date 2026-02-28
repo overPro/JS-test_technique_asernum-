@@ -8,6 +8,7 @@ import { DocumentRepository } from '@database/repositories/document.repository';
 import { UserRepository } from '@database/repositories/user.repository';
 import { DocumentEntity } from '@database/entities/document.entity';
 import { ConfigurationService } from '@config/configuration.service';
+import { UploadsService } from '@uploads/uploads.service';
 
 @CommandHandler(UploadDocumentCommand)
 export class UploadDocumentHandler implements ICommandHandler<UploadDocumentCommand> {
@@ -15,6 +16,7 @@ export class UploadDocumentHandler implements ICommandHandler<UploadDocumentComm
     private documentRepository: DocumentRepository,
     private userRepository: UserRepository,
     private configService: ConfigurationService,
+    private uploadsService: UploadsService,
     private eventBus: EventBus,
     @InjectQueue('documents') private documentsQueue: Queue,
   ) {}
@@ -26,8 +28,8 @@ export class UploadDocumentHandler implements ICommandHandler<UploadDocumentComm
       originalFilename,
       mimeType,
       sizeBytes,
+      fileBuffer,
       folderId,
-      filePath
     } = command;
 
     // Validate user exists
@@ -54,6 +56,14 @@ export class UploadDocumentHandler implements ICommandHandler<UploadDocumentComm
       throw new BadRequestException('File type not allowed');
     }
 
+    // Save file to disk
+    const filePath = await this.uploadsService.saveUploadedFile(userId, {
+      originalname: originalFilename,
+      buffer: fileBuffer,
+      size: sizeBytes,
+      mimetype: mimeType,
+    });
+
     // Create document
     const document = await this.documentRepository.create({
       filename,
@@ -62,7 +72,7 @@ export class UploadDocumentHandler implements ICommandHandler<UploadDocumentComm
       size_bytes: sizeBytes,
       user_id: userId,
       folder_id: folderId,
-      file_path: filePath || `/uploads/${userId}/${filename}`,
+      file_path: filePath,
       status: 'pending' as any,
     });
 
