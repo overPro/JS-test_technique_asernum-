@@ -132,6 +132,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_DB: 0
+      PROCESSING_DELAY_MS: 2000
       JWT_SECRET: ${JWT_SECRET:-9f4b2c7d5e8a1f0c3b6d9a2e7f4c1b8d5a0e3f6c9b2d7a4e1f8c6b3d0a5e9f2}
     depends_on:
       postgres:

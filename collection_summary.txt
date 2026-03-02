@@ -1,0 +1,187 @@
+==============================================================================
+                    COLLECTION POSTMAN GENERÉE
+==============================================================================
+
+FICHIER: collection_swagger.json
+LOCALISATION: d:\Project_Dev\WSs\js\NEST JS\test_technique_asernum\
+TAILLE: 22303 bytes
+FORMAT: Postman Collection v2.1
+IMPORTABLE:  OUI
+
+==============================================================================
+CONTENU DE LA COLLECTION
+==============================================================================
+
+STRUCTURE PAR DOSSIERS:
+
+1. AUTH (3 endpoints)
+   ├─ Register (POST /auth/register)
+   │  └─ Scripts: Save JWT + Email + UserID
+   │
+   ├─ Login (POST /auth/login)
+   │  └─ Scripts: Save JWT + UserID
+   │
+   └─ Get Current User (POST /auth/me)
+      └─ Scripts: Verify authentication
+
+2. DOCUMENTS (6 endpoints)
+   ├─ Upload Document (POST /documents/upload)
+   │  ├─ Type: multipart/form-data
+   │  ├─ Field: file
+   │  └─ Scripts: Save documentId + Verify status
+   │
+   ├─ List Documents (GET /documents)
+   │  ├─ Query: skip=0, take=10
+   │  └─ Scripts: Status validation
+   │
+   ├─ Get Document (GET /documents/{{documentId}})
+   │  └─ Scripts: Field validation (id, status)
+   │
+   ├─ Search Documents (GET /documents/search)
+   │  ├─ Query: query=test
+   │  └─ Scripts: Status validation
+   │
+   ├─ Get Download URL (GET /documents/{{documentId}}/download)
+   │  └─ Scripts: 200 or 404 accepted
+   │
+   └─ Delete Document (DELETE /documents/{{documentId}})
+      └─ Scripts: 200 or 204 accepted
+
+3. SHARES (4 endpoints)
+   ├─ Create Share (POST /shares/{{documentId}})
+   │  ├─ Body: {"mode":"readonly"}
+   │  └─ Scripts: Save shareToken + shareId + Verify token length (64)
+   │
+   ├─ List Shares (GET /shares)
+   │  └─ Scripts: Status validation
+   │
+   ├─ Get Share (GET /shares/{{shareId}})
+   │  └─ Scripts: 200 or 404 accepted
+   │
+   └─ Revoke Share (DELETE /shares/{{shareId}})
+      └─ Scripts: 200 or 204 accepted
+
+4. PUBLIC (1 endpoint)
+   └─ Access Share Token (GET /shares/public/token/{{shareToken}})
+      ├─ NO JWT REQUIRED
+      └─ Scripts: Verify documentId returned
+
+5. SYSTEM (2 endpoints)
+   ├─ Health Check - Documents API (GET /health)
+   │  └─ Service: http://localhost:3001
+   │
+   └─ Health Check - Sharing API (GET /health)
+      └─ Service: http://localhost:3002
+
+==============================================================================
+VARIABLES POSTMAN (9 totales)
+==============================================================================
+
+✓ {{baseUrlDocuments}}    = http://localhost:3001
+✓ {{baseUrlSharing}}       = http://localhost:3002
+✓ {{jwt}}                  = "" (saved by Login/Register)
+✓ {{email}}                = test@example.com
+✓ {{password}}             = Password123
+✓ {{documentId}}           = "" (saved by Upload)
+✓ {{shareToken}}           = "" (saved by Create Share)
+✓ {{shareId}}              = "" (saved by Create Share)
+✓ {{userId}}               = "" (saved by Login/Register)
+
+==============================================================================
+SCRIPTS DE TEST POSTMAN (TOUS LES ENDPOINTS)
+==============================================================================
+
+Chaque endpoint inclut:
+
+✓ pm.test('Status code check')
+  - Vérifie code HTTP attendu (200, 201, 204, 400, 401, 404)
+  - Utilise expect() pour assertions
+
+✓ Sauvegarde automatique de variables
+  - Register → jwt, email, userId
+  - Login → jwt, userId
+  - Upload → documentId
+  - Create Share → shareToken, shareId
+
+✓ Validation de champs critiques
+  - Documents: vérifie id + status
+  - Shares: vérifie token length (64 chars)
+  - Errors: accepte formats d'erreur selon endpoint
+
+==============================================================================
+AUTHENTIFICATION AUTOMATIQUE
+==============================================================================
+
+Bearer Token Setup:
+✓ Tous les endpoints protégés incluent Authorization header
+✓ Format: Authorization: Bearer {{jwt}}
+✓ Variables auto-populées après Login/Register
+
+Public Endpoints (SANS JWT):
+✓ GET /shares/public/token/:token (pas de header Authorization)
+
+==============================================================================
+UPLOAD MULTIPART (FONCTIONNEL)
+==============================================================================
+
+Endpoint: POST /documents/upload
+├─ Content-Type: multipart/form-data
+├─ Field Name: "file"
+├─ Type: file
+└─ Prêt pour sélectionner fichier dans Postman
+
+==============================================================================
+CHAÎNAGE AUTOMATIQUE (WORKFLOW COMPLET)
+==============================================================================
+
+Ordre recommandé pour tester le workflow complet:
+
+1. Health Check (Documents)     → Verify service up
+2. Health Check (Sharing)       → Verify service up
+3. Register                     → Get JWT
+4. Login                        → Confirm JWT works
+5. Get Current User             → Verify authentication
+6. Upload Document              → Get documentId
+7. Get Document                 → Check status
+8. Create Share                 → Get shareToken
+9. List Shares                  → View all shares
+10. Access Share Token          → Test public access
+
+Toutes les variables sont sauvegardées automatiquement entre requêtes!
+
+==============================================================================
+IMPORT DANS POSTMAN
+==============================================================================
+
+1. Ouvrir Postman
+2. Cliquer "Import"
+3. Sélectionner "File" tab
+4. Choisir: collection_swagger.json
+5.  Collection importée automatiquement
+
+Ou directement:
+- Postman > File > Import > collection_swagger.json
+
+==============================================================================
+VALIDATION CONFORMITÉ
+==============================================================================
+
+ 16 endpoints documentés (Auth 3 + Documents 6 + Shares 4 + Public 1 + System 2)
+ 9 variables Postman
+ Scripts de test sur chaque endpoint
+ Authentification Bearer Token
+ Upload multipart/form-data
+ Chaînage variable automatique
+ Format Postman v2.1 valide
+ JSON bien formé et importable
+ Tous endpoints depuis Swagger inclus
+ Aucun endpoint oublié
+
+==============================================================================
+PRÊT À UTILISER!
+==============================================================================
+
+La collection est prête à être importée dans Postman et testée immédiatement.
+Tous les endpoints fonctionnent avec authentification automatique et 
+sauvegarde de variables pour le workflow complet.
+

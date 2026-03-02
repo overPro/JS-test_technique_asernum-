@@ -1,6 +1,6 @@
-#  📄 ASERNUM Document Management System - Production Ready
+#   ASERNUM Document Management System - Production Ready
 
-## 🏗️ Architecture Système
+##  Architecture Système
 
 ### Aperçu Microservices
 
@@ -48,7 +48,7 @@
 - **Architecture Patterns:** CQRS, Clean Architecture, Microservices
 
 
-## 🚀 Démarrage Rapide avec Docker Compose
+##  Démarrage Rapide avec Docker Compose
 
 ### Prérequis
 
@@ -98,7 +98,7 @@ Redis:
 
 ---
 
-## 📋 Test Complet du Système
+##  Test Complet du Système
 
 ### Test 1: Authentification
 
@@ -197,7 +197,7 @@ curl -X GET http://localhost:3001/documents \
 
 ---
 
-## ✅ Checklist QA Complète
+
 
 ### Démarrage & Infrastructure
 - [ ] `docker-compose ps` affiche 5 services (postgres, redis, documents-api, sharing-api, processing-worker)
@@ -221,11 +221,11 @@ curl -X GET http://localhost:3001/documents \
 - [ ] MIME types non autorisés sont rejetés (HTTP 400)
 
 ### Partage de Documents
-- [ ] Créer partage pour document "PENDING" → HTTP 409 ✅
-- [ ] Créer partage pour document "COMPLETED" → Succès ✅
-- [ ] Accès token public fonctionne sans auth ✅
-- [ ] Token unique, sécurisé, aléatoire ✅
-- [ ] Expiration 24h (configurable) ✅
+- [ ] Créer partage pour document "PENDING" → HTTP 409 
+- [ ] Créer partage pour document "COMPLETED" → Succès 
+- [ ] Accès token public fonctionne sans auth 
+- [ ] Token unique, sécurisé, aléatoire 
+- [ ] Expiration 24h (configurable) 
 
 ### Docker & Persistance
 - [ ] `docker-compose down` conserve les données
@@ -234,7 +234,7 @@ curl -X GET http://localhost:3001/documents \
 
 ---
 
-## 🐛 Guide de Debug
+
 
 ### Les services ne décmarrent pas
 
@@ -278,7 +278,7 @@ curl -X GET http://localhost:3001/documents/$DOCUMENT_ID \
 
 ---
 
-## 📊 Service Details
+
 
 ### documents-api (Port 3001)
 
@@ -339,17 +339,16 @@ curl -X GET http://localhost:3001/documents/$DOCUMENT_ID \
 
 ---
 
-## 🔒 Sécurité
 
 ### Validations Input
 
-✅ JWT validé à chaque requête authentifiée
-✅ Email unique + validé
-✅ Mot de passe hashé (bcrypt, 10 rounds)
-✅ Taille fichier validée (50MB max)
-✅ MIME types validés (whitelist)
-✅ SQL Injection protection (TypeORM + parameterized queries)
-✅ XSS prevention (pas de contenu HTML/JS)
+ JWT validé à chaque requête authentifiée
+ Email unique + validé
+ Mot de passe hashé (bcrypt, 10 rounds)
+ Taille fichier validée (50MB max)
+ MIME types validés (whitelist)
+ SQL Injection protection (TypeORM + parameterized queries)
+ XSS prevention (pas de contenu HTML/JS)
 
 ### Endpoints Publics vs Protégés
 
@@ -369,7 +368,7 @@ PROTÉGÉS (JWT requis):
 
 ---
 
-## 📝 Structure Codebase
+
 
 ```
 test_technique_asernum/
@@ -441,7 +440,6 @@ test_technique_asernum/
 
 ---
 
-## 🔧 Configuration
 
 ### Variables Globales (.env)
 
@@ -486,35 +484,25 @@ NODE_ENV=production
 
 ### Correctionss Apportées (29 Février 2025)
 
-✅ **Sauvegarde réelle fichiers:** Fichier buffer passé via CQRS et sauvegardé par UploadsService
-✅ **Fastify Multipart:** Plugin @fastify/multipart enregistré dans main.ts
-✅ **Worker Bootstrap:** Graceful shutdown avec SIGTERM/SIGINT handlers
-✅ **Vérification status:** Document doit être COMPLETED avant partage
-✅ **Endpoint sécurisé:** Token validation est endpoint public (_/shares/public/token_)
-✅ **Expiration partage:** Vérifiée au niveau repository
-✅ **Migrations DB:** `migrationsRun: true` pour execution automatique
-✅ **DocumentEntity:** Non-null assertions ajoutées pour TypeScript
+ **Sauvegarde réelle fichiers:** Fichier buffer passé via CQRS et sauvegardé par UploadsService
+ **Fastify Multipart:** Plugin @fastify/multipart enregistré dans main.ts
+ **Worker Bootstrap:** Graceful shutdown avec SIGTERM/SIGINT handlers
+ **Vérification status:** Document doit être COMPLETED avant partage
+ **Endpoint sécurisé:** Token validation est endpoint public (_/shares/public/token_)
+ **Expiration partage:** Vérifiée au niveau repository
+ **Migrations DB:** `migrationsRun: true` pour execution automatique
+ **DocumentEntity:** Non-null assertions ajoutées pour TypeScript
 
 ---
 
-## 🚦 État Production
 
-- ✅ Services démarrent sans erreur
-- ✅ PostgreSQL & Redis initialisés
-- ✅ Authentification fonctionnelle
-- ✅ Upload & Processing réels
-- ✅ Partage avec validations
-- ✅ Redémarrage sans perte
-- ✅ Health checks actifs
-- ✅ Swagger documentation
-- ✅ Configuration externalisée
-- ✅ Logs & error handling
 
-**Status: PRODUCTION READY** ✅
+
+
 
 ---
 
-## 📞 Commandes Utiles
+
 
 ```bash
 # Infrastructure
@@ -547,9 +535,7 @@ docker-compose up -d --scale processing-worker=3  # 3 workers
 
 ---
 
-**Version:** 2.0.0 (Production Ready)
-**Mise à jour:** 28-29 Février 2025
-**Authored by:** ASERNUM Development Team
+
 
 
 ## Installation Complète

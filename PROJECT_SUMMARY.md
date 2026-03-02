@@ -1,12 +1,4 @@
 
-
-
-
-Ce projet est une **architecture microservices ** entièrement fonctionnelle avec NestJS, TypeScript, PostgreSQL, Redis, et Docker.
-
-
-
-
 ### 1. **Trois Microservices NestJS**
 
 #### documents-api (Port 3001)
